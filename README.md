@@ -32,7 +32,7 @@ Adding Ten Numbers    49905
 ```
 g++ overloading.cpp -o ov && ./ov 10 0 10000
 ```
-**This execution will generate ten random numbers between zero and ten thousand and print each line as shown in the output section.
+**This execution will generate ten random numbers between zero and ten thousand and print each line as shown in the output section.**
 
 
 
