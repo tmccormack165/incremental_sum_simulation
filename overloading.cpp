@@ -5,19 +5,20 @@
 #include <vector>
 using namespace std;
 
-float add(float x, float y);
-float add(float a, float b, float c);
-
-string digitName(int digit);
-string teenName(int number);
-string tensName(int number);
-string intName(int number);
-
 vector<string> ones {"","One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine"};
 vector<string> teens {"Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen","Sixteen", "Seventeen", "Eighteen", "Nineteen"};
 vector<string> tens {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"};
 
 string nameForNumber (long number) {
+    /**
+     * Generate the string literal for a given number using recursion. The function will operate
+     * for any integer less than 10^12
+     * 
+     *
+     * @param number The number that will be converted into a string literal
+     * @return the string literal of number ex 1 --> "One"
+     */
+
     if (number < 10) {
         return ones[number];
     } else if (number < 20) {
@@ -37,28 +38,44 @@ string nameForNumber (long number) {
 }
 
 
-int main(){
-    int n, offset;
-    int random_number, current_sum;
-    int lower_bound = 0, upper_bound = 10000;
+int main(int argc, char *argv[]){
+    // declare integer variables and pointers
+    int n, offset, random_number, current_sum, max_sum, offset_i, lower_bound, upper_bound;
     int* gdata;
     int* incremental_sums;
-    int max_sum;
+
+    if(argc > 2){
+        n = stoi(argv[1]);
+        lower_bound = stoi(argv[2]);
+        upper_bound = stoi(argv[3]);
+    }
+    else{
+        n = 5;
+        lower_bound = 0, 
+        upper_bound = 10000;
+    }
+
+
+    // declare string variables and pointers
     string* prompts;
-    string prompt_i, max_str, offset_str;
+    string prompt_i, max_str, offset_str, offset_i_str;
     string prompt_end = "d\n";
 
     // seed the random generator so that different numbers will be generated upon each execution
     srand(time(NULL));
-    //cout << "How many numbers to generate: ";
-    //cin >> n;
-    n = 5;
 
+    // n is how many random integers to generate, it is five unless command line arguments specify otherwise
+    
+
+    // allocate an array of integers of size n
     gdata = new int[n];
+    // allocate an array of strings of size n
     prompts = new string[n];
+    // allocate an array of ints to store the incremental sums
     incremental_sums = new int[n-1];
 
     // populate the prompts array
+    // calculate which string literal has the longest name ex. length("Three") == 5
     int max_length = 0;
     for(int i = 1; i < n; i++){
         prompt_i = "Adding " + nameForNumber(i+1) + " Numbers  %";
@@ -73,9 +90,7 @@ int main(){
         random_number = rand() % (upper_bound + 1); // we want the upper bound to be a possible value
         gdata[i] = random_number;
     }
-
    
-
     // calculate incremental sums
     current_sum = 0;
     for(int i = 0; i < n; i++){
@@ -85,25 +100,29 @@ int main(){
         }
     }
     
-    
-
+    // record the maximum incremental sum 
+    // its index is n-2 because the length of the invremental_sums array is n-1
+    // also, the last incremental sum will be the largest because the process is iterative
     max_sum = incremental_sums[n-2];
+    // convert the largest incremental sum to a string
     max_str = to_string(max_sum);
+    // record the length of  the maximum string, this will tell the prompts how many spaces to print
     offset = max_str.length();
+    // convert the length of the maximum string (an int) to a string
     offset_str = to_string(offset);
 
-    int offset_i;
-    string offset_i_str;
+    
     for(int i = 1; i < n; i++){
+        // calculate the unique offset for index i
         offset_i = offset + max_length - prompts[i].length();
+        // convert offset_i to string
         offset_i_str = to_string(offset_i);
+        // update prompts[i] to contain the correct offset
         prompts[i] = prompts[i] + offset_i_str + prompt_end;
         printf(prompts[i].c_str(), incremental_sums[i-1]);
     }
 
-
-
-    
+    // free the allocated arrays to avoid memory leaks
     delete[] gdata;
     delete[] prompts;
     delete[] incremental_sums;
@@ -113,58 +132,4 @@ int main(){
     return 0;
 }
 
-float add(float x, float y){
-    float r;
-    r = x + y;
-    return r;
-}
 
-float add(float a, float b, float c){
-    float r;
-    r = a + b + c;
-    return r;
-}
-
-/*
-
-float get_max(float a, float b){
-    float return_value;
-    if(a > b){
-        return_value = a;
-    }
-    else{
-        return_value = b;
-    }
-    return return_value;
-}
-
-float double_add, triple_add, max_float;
-    string max_float_str;
-    //string printf_prompt_begin = "Adding Two Numbers:    %5.2f\n";
-    string prompt_begin_2 = "Adding Two Numbers:  %";
-    string prompt_begin_3 = "Adding Three Numbers:%";
-    string offset_str;
-    string prompt_end = ".2f\n";
-    string final_prompt;
-    string final_prompt_3;
-    int offset;
-
-    double_add = add(4.4, 5.5);
-
-    triple_add = add(450.4, 6.6, 5.5);
-
-    max_float = get_max(double_add, triple_add);
-    max_float_str = to_string(max_float);
-    offset = max_float_str.length();
-    offset_str = to_string(offset);
-    final_prompt = prompt_begin_2 + offset_str + prompt_end;
-    final_prompt_3 = prompt_begin_3 + offset_str + prompt_end;
-
-    
-    
-    
-    // use printf for aligned output
-    printf(final_prompt.c_str(), double_add);
-    printf(final_prompt_3.c_str(), triple_add);
-    return 0;
-*/
