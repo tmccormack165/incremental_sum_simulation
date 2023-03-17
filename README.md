@@ -16,21 +16,21 @@ Arguments:
 
 ## Output
 ```
-Adding Two Numbers     5099
-Adding Three Numbers  13494
-Adding Four Numbers   22197
-Adding Five Numbers   22423
-Adding Six Numbers    27955
-Adding Seven Numbers  32321
-Adding Eight Numbers  39206
-Adding Nine Numbers   47012
-Adding Ten Numbers    49905
+Adding Two Numbers    12179
+Adding Three Numbers  13062
+Adding Four Numbers   22693
+Adding Five Numbers   32399
+Adding Six Numbers    37357
+Adding Seven Numbers  41034
+Adding Eight Numbers  43503
+Adding Nine Numbers   46127
+Adding Ten Numbers    47917
 ```
 
 # Usage
 
 ```
-g++ overloading.cpp -o ov && ./ov 10 0 10000
+g++ main.cpp functions.cpp -o sim && ./sim 10 0 10000
 ```
 **This execution will generate ten random numbers between zero and ten thousand and print each line as shown in the output section.**
 
